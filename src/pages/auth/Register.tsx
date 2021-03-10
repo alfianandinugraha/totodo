@@ -7,13 +7,14 @@ import useStyles from './useStyles'
 
 interface FormRegister extends FormLogin {
   repassword: HTMLInputElement
+  fullname: HTMLInputElement
 }
 
 export default function Register(): ReactElement {
   const classes = useStyles()
   const history = useHistory()
 
-  const submitRegisterHandler = (
+  const submitRegisterHandler = async (
     e: React.FormEvent<HTMLFormElement> | undefined
   ) => {
     if (!e) return
@@ -21,11 +22,12 @@ export default function Register(): ReactElement {
 
     const currentTarget: FormRegister = e.target as never
 
+    const fullname = currentTarget.fullname.value
     const email = currentTarget.email.value
     const password = currentTarget.password.value
     const repassword = currentTarget.repassword.value
 
-    if (!email || !password || !repassword) {
+    if (!email || !password || !repassword || !fullname) {
       alert('Harap isi semua bidang')
       return
     }
@@ -35,20 +37,30 @@ export default function Register(): ReactElement {
       return
     }
 
-    console.log({ email, password, repassword })
+    console.log({ email, password, repassword, fullname })
 
-    firebase
-      .auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then((user) => {
-        console.log(user)
-        alert('Pendaftaran berhasil')
-        history.push('/')
-      })
-      .catch((err) => {
-        console.log(err.message)
-        alert(`Pendaftaran gagal. Message : ${err.message}`)
-      })
+    try {
+      const authResult = await firebase
+        .auth()
+        .createUserWithEmailAndPassword(email, password)
+
+      const firestoreResult = await firebase
+        .firestore()
+        .collection('users')
+        .add({
+          uid: authResult.user?.uid,
+          fullname,
+          email,
+        })
+
+      console.log({ authResult })
+      console.log({ firestoreResult })
+      alert('Pendaftaran berhasil')
+      history.push('/')
+    } catch (err) {
+      console.log(err.message)
+      alert(`Pendaftaran gagal. Message : ${err.message}`)
+    }
   }
 
   return (
@@ -57,6 +69,9 @@ export default function Register(): ReactElement {
         Register
       </Typography>
       <form onSubmit={submitRegisterHandler} className={classes.formRoot}>
+        <div className={classes.input}>
+          <TextField label="Fullname" name="fullname" type="text" fullWidth />
+        </div>
         <div className={classes.input}>
           <TextField label="Email" name="email" type="email" fullWidth />
         </div>
