@@ -1,6 +1,7 @@
+import firebase from '@/utils/firebase'
 import { Button, Container, TextField, Typography } from '@material-ui/core'
 import React, { ReactElement } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import useStyles from './useStyles'
 
 export interface FormLogin {
@@ -9,6 +10,7 @@ export interface FormLogin {
 }
 
 export default function Login(): ReactElement {
+  const history = useHistory()
   const classes = useStyles()
 
   const submitLoginHandler = (
@@ -28,6 +30,18 @@ export default function Login(): ReactElement {
     }
 
     console.log({ email, password })
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password)
+      .then((user) => {
+        console.log(user)
+        alert('Login berhasil !')
+        history.push('/')
+      })
+      .catch((err) => {
+        console.log(err)
+        alert(`Login gagal. Message : ${err.message}`)
+      })
   }
 
   return (
