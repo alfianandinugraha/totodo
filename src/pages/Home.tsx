@@ -26,7 +26,7 @@ const useStyles = makeStyles(({ spacing }) => ({
 }))
 
 export default function Home(): ReactElement {
-  const { setIsLoggedIn } = useContext(AuthContext)
+  const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext)
   const history = useHistory()
   const classes = useStyles()
 
@@ -44,23 +44,33 @@ export default function Home(): ReactElement {
     <Container maxWidth="sm">
       <div className={classes.header}>
         <Typography variant="h3">Totodo</Typography>
-        <Button variant="contained" color="secondary" onClick={signOutHandler}>
-          Keluar
-        </Button>
+        {isLoggedIn && (
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={signOutHandler}
+          >
+            Keluar
+          </Button>
+        )}
       </div>
-      <div className={classes.unAuthContent}>
-        <Typography>
-          Anda belum login, silahkan login terlebih dahulu
-        </Typography>
-      </div>
-      <div className={classes.unAuthButtonGroup}>
-        <Button variant="contained" color="primary">
-          <Link to="/login">Login</Link>
-        </Button>
-        <Button variant="outlined" color="primary">
-          <Link to="/register">Register</Link>
-        </Button>
-      </div>
+      {!isLoggedIn && (
+        <>
+          <div className={classes.unAuthContent}>
+            <Typography>
+              Anda belum login, silahkan login terlebih dahulu
+            </Typography>
+          </div>
+          <div className={classes.unAuthButtonGroup}>
+            <Button variant="contained" color="primary">
+              <Link to="/login">Login</Link>
+            </Button>
+            <Button variant="outlined" color="primary">
+              <Link to="/register">Register</Link>
+            </Button>
+          </div>
+        </>
+      )}
     </Container>
   )
 }
