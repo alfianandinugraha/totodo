@@ -1,3 +1,4 @@
+import TodoCard, { Todo } from '@/components/TodoCard'
 import AuthContext from '@/store/AuthContext'
 import firebase from '@/utils/firebase'
 import {
@@ -45,6 +46,24 @@ const useStyles = makeStyles(({ spacing }) => ({
     marginTop: spacing(3),
   },
 }))
+
+const initialTodos: Todo[] = [
+  {
+    uid: '2EI1nKMDDlSsHcmUSq05RWUIawt2',
+    description: 'hello',
+    todoId: '1023098123',
+  },
+  {
+    uid: '2EI1nKMDDlSsHcmUSq05RWUIawt2',
+    description: 'hello',
+    todoId: '1023098124',
+  },
+  {
+    uid: '2EI1nKMDDlSsHcmUSq05RWUIawt2',
+    description: 'hello',
+    todoId: '1023098125',
+  },
+]
 
 export default function Home(): ReactElement {
   const { isLoggedIn, setIsLoggedIn, userInfo } = useContext(AuthContext)
@@ -122,6 +141,11 @@ export default function Home(): ReactElement {
                 </Button>
               </div>
             </form>
+            <div>
+              {initialTodos.map((todo) => (
+                <TodoCard payload={todo} key={todo.todoId} />
+              ))}
+            </div>
           </>
         )}
       </div>
