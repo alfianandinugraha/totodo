@@ -8,7 +8,7 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core'
-import React, { ReactElement, useContext } from 'react'
+import React, { ReactElement, useContext, useEffect, useState } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 
 interface FormTodo {
@@ -70,6 +70,7 @@ const initialTodos: Todo[] = [
 
 export default function Home(): ReactElement {
   const { isLoggedIn, setIsLoggedIn, userInfo } = useContext(AuthContext)
+  const [todos, setTodos] = useState<Todo[]>()
   const history = useHistory()
   const classes = useStyles()
 
@@ -100,6 +101,17 @@ export default function Home(): ReactElement {
 
     console.log({ description, todoId, uid })
   }
+
+  useEffect(() => {
+    firebase
+      .firestore()
+      .collection('todos')
+      .where('uid', '==', userInfo.uid)
+      .get()
+      .then((val) => {
+        val.docs.forEach((item) => console.log(item.data()))
+      })
+  }, [])
 
   return (
     <Container maxWidth="sm">
