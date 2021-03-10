@@ -99,6 +99,12 @@ export default function Home(): ReactElement {
     }
 
     console.log({ description, todoId, uid })
+    firebase
+      .firestore()
+      .collection('todos')
+      .add({ description, todoId, uid })
+      .then(() => alert('Todo berhasil ditambahan'))
+      .catch(() => alert('Todo gagal ditambahkan'))
   }
 
   return (
