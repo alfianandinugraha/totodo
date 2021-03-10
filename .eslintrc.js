@@ -35,6 +35,7 @@ const config = {
       },
     ],
     semi: 'off',
+    'no-alert': 'off',
     '@typescript-eslint/semi': 'off',
     'arrow-body-style': ['error', 'as-needed'],
     '@typescript-eslint/comma-dangle': [
