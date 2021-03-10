@@ -46,6 +46,11 @@ export default function Login(): ReactElement {
     const email = currentTarget.email.value
     const password = currentTarget.password.value
 
+    if (!email || !password) {
+      alert('Harap isi semua bidang')
+      return
+    }
+
     console.log({ email, password })
   }
 
