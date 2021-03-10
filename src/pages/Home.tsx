@@ -1,8 +1,18 @@
 import AuthContext from '@/store/AuthContext'
 import firebase from '@/utils/firebase'
-import { Button, Container, makeStyles, Typography } from '@material-ui/core'
+import {
+  Button,
+  Container,
+  makeStyles,
+  TextField,
+  Typography,
+} from '@material-ui/core'
 import React, { ReactElement, useContext } from 'react'
 import { Link, useHistory } from 'react-router-dom'
+
+interface FormTodo {
+  description: HTMLInputElement
+}
 
 const useStyles = makeStyles(({ spacing }) => ({
   unAuthContent: {
@@ -23,6 +33,17 @@ const useStyles = makeStyles(({ spacing }) => ({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
+  formTodo: {
+    display: 'flex',
+    flexDirection: 'column',
+    '& > div': {
+      width: '100%',
+    },
+  },
+  formInputTodo: {
+    marginBottom: spacing(3),
+    marginTop: spacing(3),
+  },
 }))
 
 export default function Home(): ReactElement {
@@ -38,6 +59,24 @@ export default function Home(): ReactElement {
         setIsLoggedIn(false)
         history.push('/login')
       })
+  }
+
+  const addTodoHandler = (e: React.FormEvent<HTMLFormElement> | undefined) => {
+    if (!e) return
+    e.preventDefault()
+
+    const currentTarget: FormTodo = e.target as never
+
+    const description = currentTarget.description.value
+    const todoId = new Date().getTime()
+    const { uid } = userInfo
+
+    if (!description) {
+      alert('Harap isi aktifitas')
+      return
+    }
+
+    console.log({ description, todoId, uid })
   }
 
   return (
@@ -57,6 +96,33 @@ export default function Home(): ReactElement {
       <div>
         {userInfo.fullname && (
           <Typography>Selamat datang, {userInfo.fullname}</Typography>
+        )}
+      </div>
+      <div>
+        {isLoggedIn && (
+          <>
+            <form className={classes.formTodo} onSubmit={addTodoHandler}>
+              <div className={classes.formInputTodo}>
+                <TextField
+                  type="text"
+                  name="description"
+                  label="Deskripsi"
+                  placeholder="Makan seblak"
+                  fullWidth
+                />
+              </div>
+              <div>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  fullWidth
+                  type="submit"
+                >
+                  Tambah Aktifitas
+                </Button>
+              </div>
+            </form>
+          </>
         )}
       </div>
       {!isLoggedIn && (
