@@ -19,6 +19,9 @@ const useStyles = makeStyles(({ spacing, breakpoints }) => ({
     flexDirection: 'column',
     marginBottom: spacing(2),
     borderRadius: '5px',
+    '& > p': {
+      marginBottom: spacing(1),
+    },
     [breakpoints.up('sm')]: {
       justifyContent: 'space-between',
       alignItems: 'center',
@@ -26,9 +29,6 @@ const useStyles = makeStyles(({ spacing, breakpoints }) => ({
       '& > p': {
         marginBottom: '0px',
       },
-    },
-    '& > p': {
-      marginBottom: spacing(1),
     },
   },
 }))
