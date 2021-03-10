@@ -26,7 +26,7 @@ const useStyles = makeStyles(({ spacing }) => ({
 }))
 
 export default function Home(): ReactElement {
-  const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext)
+  const { isLoggedIn, setIsLoggedIn, userInfo } = useContext(AuthContext)
   const history = useHistory()
   const classes = useStyles()
 
@@ -52,6 +52,11 @@ export default function Home(): ReactElement {
           >
             Keluar
           </Button>
+        )}
+      </div>
+      <div>
+        {userInfo.fullname && (
+          <Typography>Selamat datang, {userInfo.fullname}</Typography>
         )}
       </div>
       {!isLoggedIn && (
