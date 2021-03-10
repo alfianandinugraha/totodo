@@ -1,6 +1,8 @@
+import AuthContext from '@/store/AuthContext'
+import firebase from '@/utils/firebase'
 import { Button, Container, makeStyles, Typography } from '@material-ui/core'
-import React, { ReactElement } from 'react'
-import { Link } from 'react-router-dom'
+import React, { ReactElement, useContext } from 'react'
+import { Link, useHistory } from 'react-router-dom'
 
 const useStyles = makeStyles(({ spacing }) => ({
   unAuthContent: {
@@ -16,13 +18,36 @@ const useStyles = makeStyles(({ spacing }) => ({
       },
     },
   },
+  header: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
 }))
 
 export default function Home(): ReactElement {
+  const { setIsLoggedIn } = useContext(AuthContext)
+  const history = useHistory()
   const classes = useStyles()
+
+  const signOutHandler = () => {
+    firebase
+      .auth()
+      .signOut()
+      .then(() => {
+        setIsLoggedIn(false)
+        history.push('/login')
+      })
+  }
+
   return (
     <Container maxWidth="sm">
-      <Typography variant="h3">Totodo</Typography>
+      <div className={classes.header}>
+        <Typography variant="h3">Totodo</Typography>
+        <Button variant="contained" color="secondary" onClick={signOutHandler}>
+          Keluar
+        </Button>
+      </div>
       <div className={classes.unAuthContent}>
         <Typography>
           Anda belum login, silahkan login terlebih dahulu

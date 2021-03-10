@@ -21,7 +21,7 @@ export default function Root(): ReactElement {
         <Home />
       </Route>
       <Route path="/login">
-        <Login />
+        {isLoggedIn ? <Redirect to="/" /> : <Login />}
       </Route>
       <Route path="/register">
         {isLoggedIn ? <Redirect to="/" /> : <Register />}
