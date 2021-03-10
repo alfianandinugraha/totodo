@@ -1,6 +1,7 @@
+import firebase from '@/utils/firebase'
 import { Container, Typography, TextField, Button } from '@material-ui/core'
 import React, { ReactElement } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { FormLogin } from './Login'
 import useStyles from './useStyles'
 
@@ -10,6 +11,7 @@ interface FormRegister extends FormLogin {
 
 export default function Register(): ReactElement {
   const classes = useStyles()
+  const history = useHistory()
 
   const submitRegisterHandler = (
     e: React.FormEvent<HTMLFormElement> | undefined
@@ -34,6 +36,19 @@ export default function Register(): ReactElement {
     }
 
     console.log({ email, password, repassword })
+
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then((user) => {
+        console.log(user)
+        alert('Pendaftaran berhasil')
+        history.push('/')
+      })
+      .catch((err) => {
+        console.log(err.message)
+        alert(`Pendaftaran gagal. Message : ${err.message}`)
+      })
   }
 
   return (
