@@ -45,6 +45,9 @@ const useStyles = makeStyles(({ spacing }) => ({
     marginBottom: spacing(3),
     marginTop: spacing(3),
   },
+  listTodoContainer: {
+    marginTop: spacing(3),
+  },
 }))
 
 const initialTodos: Todo[] = [
@@ -141,7 +144,7 @@ export default function Home(): ReactElement {
                 </Button>
               </div>
             </form>
-            <div>
+            <div className={classes.listTodoContainer}>
               {initialTodos.map((todo) => (
                 <TodoCard payload={todo} key={todo.todoId} />
               ))}
