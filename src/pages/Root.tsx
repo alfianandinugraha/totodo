@@ -1,8 +1,8 @@
 import React, { ReactElement } from 'react'
 import { Route, Switch } from 'react-router-dom'
 import Home from './Home'
-import Login from './Login'
-import Register from './Register'
+import Login from './auth/Login'
+import Register from './auth/Register'
 
 export default function Root(): ReactElement {
   return (
