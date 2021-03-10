@@ -1,6 +1,84 @@
+import { Container, Typography, TextField, Button } from '@material-ui/core'
 import React, { ReactElement } from 'react'
+import { Link } from 'react-router-dom'
+import { FormLogin } from './Login'
+import useStyles from './useStyles'
+
+interface FormRegister extends FormLogin {
+  repassword: HTMLInputElement
+}
 
 export default function Register(): ReactElement {
-  console.log('register page')
-  return <div />
+  const classes = useStyles()
+
+  const submitRegisterHandler = (
+    e: React.FormEvent<HTMLFormElement> | undefined
+  ) => {
+    if (!e) return
+    e.preventDefault()
+
+    const currentTarget: FormRegister = e.target as never
+
+    const email = currentTarget.email.value
+    const password = currentTarget.password.value
+    const repassword = currentTarget.repassword.value
+
+    if (!email || !password || !repassword) {
+      alert('Harap isi semua bidang')
+      return
+    }
+
+    if (password !== repassword) {
+      alert('Password tidak sama')
+      return
+    }
+
+    console.log({ email, password, repassword })
+  }
+
+  return (
+    <Container maxWidth="sm">
+      <Typography variant="h3" className={classes.header}>
+        Register
+      </Typography>
+      <form onSubmit={submitRegisterHandler} className={classes.formRoot}>
+        <div className={classes.input}>
+          <TextField label="Email" name="email" type="email" fullWidth />
+        </div>
+        <div className={classes.input}>
+          <TextField
+            label="Password"
+            name="password"
+            type="password"
+            fullWidth
+          />
+        </div>
+        <div className={classes.input}>
+          <TextField
+            label="Re-Password"
+            name="repassword"
+            type="password"
+            fullWidth
+          />
+        </div>
+        <div className={classes.buttonGroup}>
+          <Button variant="contained" color="primary" type="submit">
+            Register
+          </Button>
+          <div
+            style={{
+              display: 'flex',
+              marginLeft: '1rem',
+              alignItems: 'center',
+            }}
+          >
+            <Typography>Sudah memiliki akun ?&nbsp;</Typography>
+            <Typography>
+              <Link to="/login">Login</Link>
+            </Typography>
+          </div>
+        </div>
+      </form>
+    </Container>
+  )
 }
