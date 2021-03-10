@@ -68,7 +68,7 @@ export default function Home(): ReactElement {
     const currentTarget: FormTodo = e.target as never
 
     const description = currentTarget.description.value
-    const todoId = new Date().getTime()
+    const todoId = new Date().getTime().toString()
     const { uid } = userInfo
 
     if (!description) {
