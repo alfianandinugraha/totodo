@@ -1,4 +1,5 @@
 import HeaderDashboard from '@/components/HeaderDashboard'
+import UserContext from '@/store/UserContext'
 import {
   Container,
   TextField,
@@ -6,7 +7,7 @@ import {
   Button,
   makeStyles,
 } from '@material-ui/core'
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useContext } from 'react'
 
 const useStyles = makeStyles(({ spacing }) => ({
   formUpdate: {
@@ -20,6 +21,7 @@ const useStyles = makeStyles(({ spacing }) => ({
 }))
 
 export default function ProfilePage(): ReactElement {
+  const { userInfo } = useContext(UserContext)
   const classes = useStyles()
 
   return (
@@ -27,7 +29,7 @@ export default function ProfilePage(): ReactElement {
       <HeaderDashboard />
       <Typography>Update Profile</Typography>
       <form className={classes.formUpdate}>
-        <TextField label="Fullname" />
+        <TextField label="Fullname" defaultValue={userInfo.fullname} />
         <Button variant="contained" color="primary">
           Update
         </Button>
