@@ -1,14 +1,13 @@
 import { Button, ButtonGroup, makeStyles, Typography } from '@material-ui/core'
 import React, { ReactElement } from 'react'
-
-export interface Todo {
-  todoId: string
-  description: string
-  uid: string
-}
+import { Todo } from 'Types'
 
 interface TodoCardProps {
   payload: Todo
+  onClickDelete: (
+    todoId: Todo,
+    e?: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => void
 }
 
 const useStyles = makeStyles(({ spacing, breakpoints }) => ({
@@ -33,7 +32,10 @@ const useStyles = makeStyles(({ spacing, breakpoints }) => ({
   },
 }))
 
-export default function TodoCard({ payload }: TodoCardProps): ReactElement {
+export default function TodoCard({
+  payload,
+  onClickDelete,
+}: TodoCardProps): ReactElement {
   const classes = useStyles()
   return (
     <div className={classes.root}>
@@ -46,7 +48,11 @@ export default function TodoCard({ payload }: TodoCardProps): ReactElement {
           <Button variant="outlined" color="primary">
             Update
           </Button>
-          <Button variant="outlined" color="secondary">
+          <Button
+            variant="outlined"
+            color="secondary"
+            onClick={(e) => onClickDelete(payload, e)}
+          >
             Delete
           </Button>
         </ButtonGroup>

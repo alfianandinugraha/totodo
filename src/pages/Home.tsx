@@ -1,4 +1,4 @@
-import TodoCard, { Todo } from '@/components/TodoCard'
+import TodoCard from '@/components/TodoCard'
 import AuthContext from '@/store/AuthContext'
 import UserContext from '@/store/UserContext'
 import firebase from '@/utils/firebase'
@@ -11,6 +11,7 @@ import {
 } from '@material-ui/core'
 import React, { ReactElement, useContext, useEffect, useState } from 'react'
 import { Link, useHistory } from 'react-router-dom'
+import { Todo } from 'Types'
 
 interface FormTodo {
   description: HTMLInputElement
@@ -113,6 +114,11 @@ export default function Home(): ReactElement {
       .catch(() => alert('Todo gagal ditambahkan'))
   }
 
+  const deleteTodoHandler = (todoId: Todo) => {
+    console.log('deleting todo...')
+    console.log(todoId)
+  }
+
   useEffect(() => {
     if (isUserInfoLoading) return
     firebase
@@ -175,7 +181,11 @@ export default function Home(): ReactElement {
             <div className={classes.listTodoContainer}>
               {todos.length !== 0 &&
                 todos.map((todo) => (
-                  <TodoCard payload={todo} key={todo.todoId} />
+                  <TodoCard
+                    payload={todo}
+                    key={todo.todoId}
+                    onClickDelete={deleteTodoHandler}
+                  />
                 ))}
             </div>
           </>

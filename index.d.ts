@@ -11,4 +11,10 @@ declare module 'Types' {
     setUserInfo: (user: User) => void
     setIsUserInfoLoading: (status: boolean) => void
   }
+
+  export interface Todo {
+    todoId: string
+    description: string
+    uid: string
+  }
 }
