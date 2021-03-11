@@ -1,23 +1,44 @@
 import React, { ReactElement, useReducer } from 'react'
 import { HashRouter } from 'react-router-dom'
 import Root from './pages/Root'
-import AuthContext, { updateAuth, updateUserInfo } from './store/AuthContext'
+import AuthContext, {
+  updateAuth,
+  updateIsAuthLoading,
+} from './store/AuthContext'
+import UserContext, {
+  initialUser,
+  updateIsLoadingUserInfo,
+  updateUserInfo,
+} from './store/UserContext'
 
 const App = (): ReactElement => {
   const [isLoggedIn, setIsLoggedIn] = useReducer(updateAuth, false)
-  const [userInfo, setUserInfo] = useReducer(updateUserInfo, {
-    fullname: '',
-    email: '',
-    uid: '',
-  })
+  const [isAuthLoading, setIsAuthLoading] = useReducer(
+    updateIsAuthLoading,
+    true
+  )
+  const [isUserInfoLoading, setIsUserInfoLoading] = useReducer(
+    updateIsLoadingUserInfo,
+    true
+  )
+  const [userInfo, setUserInfo] = useReducer(updateUserInfo, initialUser)
 
   return (
     <AuthContext.Provider
-      value={{ isLoggedIn, setIsLoggedIn, userInfo, setUserInfo }}
+      value={{ isLoggedIn, setIsLoggedIn, isAuthLoading, setIsAuthLoading }}
     >
-      <HashRouter>
-        <Root />
-      </HashRouter>
+      <UserContext.Provider
+        value={{
+          isUserInfoLoading,
+          setIsUserInfoLoading,
+          userInfo,
+          setUserInfo,
+        }}
+      >
+        <HashRouter>
+          <Root />
+        </HashRouter>
+      </UserContext.Provider>
     </AuthContext.Provider>
   )
 }

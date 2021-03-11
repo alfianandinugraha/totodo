@@ -1,5 +1,6 @@
 import TodoCard, { Todo } from '@/components/TodoCard'
 import AuthContext from '@/store/AuthContext'
+import UserContext from '@/store/UserContext'
 import firebase from '@/utils/firebase'
 import {
   Button,
@@ -69,7 +70,8 @@ const initialTodos: Todo[] = [
 ]
 
 export default function Home(): ReactElement {
-  const { isLoggedIn, setIsLoggedIn, userInfo } = useContext(AuthContext)
+  const { isLoggedIn, setIsLoggedIn, isAuthLoading } = useContext(AuthContext)
+  const { userInfo, isUserInfoLoading } = useContext(UserContext)
   const [todos, setTodos] = useState<Todo[]>([])
   const history = useHistory()
   const classes = useStyles()
@@ -112,7 +114,7 @@ export default function Home(): ReactElement {
   }
 
   useEffect(() => {
-    if (!userInfo.uid) return
+    if (isUserInfoLoading) return
     firebase
       .firestore()
       .collection('todos')
@@ -124,7 +126,7 @@ export default function Home(): ReactElement {
         console.log(todosData)
         setTodos(todosData)
       })
-  }, [userInfo.uid])
+  }, [isUserInfoLoading])
 
   return (
     <Container maxWidth="sm">
@@ -141,7 +143,7 @@ export default function Home(): ReactElement {
         )}
       </div>
       <div>
-        {userInfo.fullname && (
+        {!isUserInfoLoading && (
           <Typography>Selamat datang, {userInfo.fullname}</Typography>
         )}
       </div>
@@ -164,6 +166,7 @@ export default function Home(): ReactElement {
                   color="primary"
                   fullWidth
                   type="submit"
+                  disabled={isUserInfoLoading}
                 >
                   Tambah Aktifitas
                 </Button>
@@ -178,7 +181,8 @@ export default function Home(): ReactElement {
           </>
         )}
       </div>
-      {!isLoggedIn && (
+      {isAuthLoading && <Typography>Loading...</Typography>}
+      {!isAuthLoading && !isLoggedIn && (
         <>
           <div className={classes.unAuthContent}>
             <Typography>
