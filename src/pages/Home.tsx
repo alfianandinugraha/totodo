@@ -1,4 +1,4 @@
-import TodoCard from '@/components/TodoCard'
+import TodoCard, { TodoButtonType } from '@/components/TodoCard'
 import { initialTodo } from '@/initial/Todos'
 import AuthContext from '@/store/AuthContext'
 import UserContext from '@/store/UserContext'
@@ -116,6 +116,13 @@ export default function Home(): ReactElement {
       })
   }
 
+  const receiveButtonTodoCardHandler = (
+    type: TodoButtonType,
+    payload: Todo
+  ) => {
+    if (type === 'DELETE') deleteTodoHandler(payload)
+  }
+
   useEffect(() => {
     if (isUserInfoLoading) return
     firebase
@@ -184,7 +191,7 @@ export default function Home(): ReactElement {
                   <TodoCard
                     payload={todo}
                     key={todo.todoId}
-                    onClickDelete={deleteTodoHandler}
+                    onButtonClick={receiveButtonTodoCardHandler}
                   />
                 ))}
             </div>
