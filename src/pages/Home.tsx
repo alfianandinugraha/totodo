@@ -5,21 +5,20 @@ import {
   finishTodoRequest,
   updateTodoRequest,
 } from '@/api/TodosRequest'
+import HeaderDashboard from '@/components/HeaderDashboard'
 import TodoCard, { TodoButtonType } from '@/components/TodoCard'
 import { initialTodo } from '@/initial/Todos'
-import initialUser from '@/initial/User'
 import AuthContext from '@/store/AuthContext'
 import UserContext from '@/store/UserContext'
-import firebase from '@/utils/firebase'
 import {
-  Button,
   Container,
   makeStyles,
   TextField,
   Typography,
+  Button,
 } from '@material-ui/core'
 import React, { ReactElement, useContext, useEffect, useState } from 'react'
-import { Link, useHistory } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { Todo, TodoBody } from 'Types'
 
 interface FormTodo {
@@ -40,11 +39,6 @@ const useStyles = makeStyles(({ spacing }) => ({
       },
     },
   },
-  header: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
   formTodo: {
     display: 'flex',
     flexDirection: 'column',
@@ -62,28 +56,10 @@ const useStyles = makeStyles(({ spacing }) => ({
 }))
 
 export default function Home(): ReactElement {
-  const { isLoggedIn, setIsLoggedIn, isAuthLoading } = useContext(AuthContext)
-  const {
-    userInfo,
-    isUserInfoLoading,
-    setUserInfo,
-    setIsUserInfoLoading,
-  } = useContext(UserContext)
+  const { isLoggedIn, isAuthLoading } = useContext(AuthContext)
+  const { userInfo, isUserInfoLoading } = useContext(UserContext)
   const [todos, setTodos] = useState<Todo[]>([])
-  const history = useHistory()
   const classes = useStyles()
-
-  const signOutHandler = () => {
-    firebase
-      .auth()
-      .signOut()
-      .then(() => {
-        setIsLoggedIn(false)
-        setUserInfo(initialUser)
-        setIsUserInfoLoading(true)
-        history.push('/login')
-      })
-  }
 
   const addTodoHandler = (e: React.FormEvent<HTMLFormElement> | undefined) => {
     if (!e) return
@@ -192,21 +168,13 @@ export default function Home(): ReactElement {
 
   return (
     <Container maxWidth="sm">
-      <div className={classes.header}>
-        <Typography variant="h3">Totodo</Typography>
-        {isLoggedIn && (
-          <Button
-            variant="contained"
-            color="secondary"
-            onClick={signOutHandler}
-          >
-            Keluar
-          </Button>
-        )}
-      </div>
+      <HeaderDashboard />
       <div>
         {!isUserInfoLoading && (
-          <Typography>Selamat datang, {userInfo.fullname}</Typography>
+          <Typography>
+            Selamat datang, {userInfo.fullname} (
+            <Link to="/profile">update</Link>)
+          </Typography>
         )}
       </div>
       <div>
