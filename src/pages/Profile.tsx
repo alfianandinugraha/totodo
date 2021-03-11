@@ -41,16 +41,18 @@ export default function ProfilePage(): ReactElement {
     <Container maxWidth="sm">
       <HeaderDashboard />
       <Typography>Update Profile</Typography>
-      <form className={classes.formUpdate} onSubmit={submitFormHandler}>
-        <TextField
-          label="Fullname"
-          defaultValue={userInfo.fullname}
-          name="fullname"
-        />
-        <Button variant="contained" color="primary" type="submit">
-          Update
-        </Button>
-      </form>
+      {userInfo.fullname && (
+        <form className={classes.formUpdate} onSubmit={submitFormHandler}>
+          <TextField
+            label="Fullname"
+            defaultValue={userInfo.fullname}
+            name="fullname"
+          />
+          <Button variant="contained" color="primary" type="submit">
+            Update
+          </Button>
+        </form>
+      )}
     </Container>
   )
 }
