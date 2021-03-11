@@ -27,9 +27,6 @@ const useStyles = makeStyles(({ spacing, breakpoints }) => ({
     borderRadius: '5px',
     display: 'flex',
     flexDirection: 'column',
-    '& > p': {
-      marginBottom: spacing(1),
-    },
   },
   content: {
     display: 'flex',
@@ -41,6 +38,9 @@ const useStyles = makeStyles(({ spacing, breakpoints }) => ({
       '& > p': {
         marginBottom: '0px',
       },
+    },
+    '& > p': {
+      marginBottom: spacing(1),
     },
   },
   formUpdate: {
