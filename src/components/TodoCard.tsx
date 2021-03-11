@@ -5,7 +5,7 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core'
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useState } from 'react'
 import { Todo } from 'Types'
 
 export type TodoButtonType = 'FINISH' | 'UPDATE' | 'DELETE'
@@ -30,7 +30,6 @@ const useStyles = makeStyles(({ spacing, breakpoints }) => ({
   content: {
     display: 'flex',
     flexDirection: 'column',
-    marginBottom: spacing(3),
     [breakpoints.up('sm')]: {
       justifyContent: 'space-between',
       alignItems: 'center',
@@ -46,12 +45,16 @@ const useStyles = makeStyles(({ spacing, breakpoints }) => ({
       marginLeft: spacing(1),
     },
   },
+  formUpdateWrapper: {
+    marginTop: spacing(3),
+  },
 }))
 
 export default function TodoCard({
   payload,
   onButtonClick,
 }: TodoCardProps): ReactElement {
+  const [isFormUpdateShow, setIsFormUpdateShow] = useState(false)
   const classes = useStyles()
   return (
     <div className={classes.root}>
@@ -78,10 +81,10 @@ export default function TodoCard({
             </Button>
             <Button
               variant="outlined"
-              color="primary"
-              onClick={() => onButtonClick('UPDATE', payload)}
+              color={isFormUpdateShow ? 'secondary' : 'primary'}
+              onClick={() => setIsFormUpdateShow(!isFormUpdateShow)}
             >
-              Update
+              {isFormUpdateShow ? 'Close' : 'Update'}
             </Button>
             <Button
               variant="outlined"
@@ -93,15 +96,16 @@ export default function TodoCard({
           </ButtonGroup>
         </div>
       </div>
-
-      <div>
-        <form className={classes.formUpdate}>
-          <TextField fullWidth value={payload.description} />
-          <Button variant="contained" color="primary">
-            Update
-          </Button>
-        </form>
-      </div>
+      {isFormUpdateShow && (
+        <div className={classes.formUpdateWrapper}>
+          <form className={classes.formUpdate}>
+            <TextField fullWidth value={payload.description} />
+            <Button variant="contained" color="primary">
+              Update
+            </Button>
+          </form>
+        </div>
+      )}
     </div>
   )
 }
