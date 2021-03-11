@@ -16,5 +16,6 @@ declare module 'Types' {
     todoId: string
     description: string
     uid: string
+    isFinish: boolean
   }
 }

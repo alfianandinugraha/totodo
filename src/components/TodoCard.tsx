@@ -39,7 +39,9 @@ export default function TodoCard({
   const classes = useStyles()
   return (
     <div className={classes.root}>
-      <Typography>{payload.description}</Typography>
+      <Typography>
+        {payload.isFinish ? <s>{payload.description}</s> : payload.description}
+      </Typography>
       <div>
         <ButtonGroup>
           <Button variant="outlined" color="primary">

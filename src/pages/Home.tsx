@@ -1,4 +1,5 @@
 import TodoCard from '@/components/TodoCard'
+import { initialTodo } from '@/initial/Todos'
 import AuthContext from '@/store/AuthContext'
 import UserContext from '@/store/UserContext'
 import firebase from '@/utils/firebase'
@@ -90,7 +91,7 @@ export default function Home(): ReactElement {
       .collection('todos')
       .add({ description, todoId, uid })
       .then(() => {
-        setTodos([{ description, todoId, uid }, ...todos])
+        setTodos([{ description, todoId, uid, isFinish: false }, ...todos])
         alert('Todo berhasil ditambahan')
       })
       .catch(() => alert('Todo gagal ditambahkan'))
@@ -124,7 +125,10 @@ export default function Home(): ReactElement {
       .get()
       .then((val) => {
         console.log('fetching todos ...')
-        const todosData = val.docs.map((item) => item.data()) as Todo[]
+        const todosData = val.docs.map((item) => ({
+          ...initialTodo,
+          ...item.data(),
+        })) as Todo[]
         console.log(todosData)
         setTodos(todosData)
       })
