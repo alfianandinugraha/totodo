@@ -1,32 +1,27 @@
 import { createContext } from 'react'
 
-export interface User {
-  uid: string
-  fullname: string
-  email: string
-}
-
 interface AuthContextProps {
   isLoggedIn: boolean
+  isAuthLoading: boolean
   setIsLoggedIn: (status: boolean) => void
-  userInfo: User
-  setUserInfo: (user: User) => void
+  setIsAuthLoading: (status: boolean) => void
 }
 
-const AuthContext = createContext<AuthContextProps>({
+const initialAuthContext: AuthContextProps = {
   isLoggedIn: false,
+  isAuthLoading: true,
   setIsLoggedIn: () => {},
-  userInfo: {
-    fullname: '',
-    email: '',
-    uid: '',
-  },
-  setUserInfo: () => {},
-})
+  setIsAuthLoading: () => {},
+}
+
+const AuthContext = createContext<AuthContextProps>(initialAuthContext)
 
 const updateAuth = (initialState: boolean, newState: boolean): boolean =>
   newState
-const updateUserInfo = (initalState: User, newState: User): User => newState
+const updateIsAuthLoading = (
+  initalState: boolean,
+  newState: boolean
+): boolean => newState
 
 export default AuthContext
-export { updateAuth, updateUserInfo }
+export { updateAuth, updateIsAuthLoading }
