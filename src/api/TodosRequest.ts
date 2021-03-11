@@ -1,11 +1,12 @@
 import firebase from '@/utils/firebase'
-import { User } from 'Types'
+import { Todo, User } from 'Types'
 
 const fetchTodosRequest = (
   user: User
 ): Promise<firebase.firestore.QuerySnapshot<firebase.firestore.DocumentData>> =>
   firebase.firestore().collection('todos').where('uid', '==', user.uid).get()
 
-const addTodoRequest = (): void => {}
+const deleteTodoRequest = (todo: Todo): Promise<void> =>
+  firebase.firestore().collection('todos').doc(todo.docId).delete()
 
-export { fetchTodosRequest, addTodoRequest }
+export { fetchTodosRequest, deleteTodoRequest }

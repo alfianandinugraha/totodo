@@ -1,4 +1,4 @@
-import { fetchTodosRequest } from '@/api/TodosRequest'
+import { deleteTodoRequest, fetchTodosRequest } from '@/api/TodosRequest'
 import TodoCard, { TodoButtonType } from '@/components/TodoCard'
 import { initialTodo } from '@/initial/Todos'
 import AuthContext from '@/store/AuthContext'
@@ -104,19 +104,14 @@ export default function Home(): ReactElement {
   const deleteTodoHandler = (todo: Todo) => {
     console.log('deleting todo...')
     console.log(todo)
-    firebase
-      .firestore()
-      .collection('todos')
-      .where('todoId', '==', todo.todoId)
-      .get()
-      .then((val) => {
-        const [docId] = val.docs.map((item) => item.id)
 
-        return firebase.firestore().collection('todos').doc(docId).delete()
-      })
+    deleteTodoRequest(todo)
       .then(() => {
         setTodos(todos.filter((todoItem) => todoItem.todoId !== todo.todoId))
         console.log('Todo deleted !')
+      })
+      .catch(() => {
+        console.log('gagal untuk menghapus todo')
       })
   }
 
