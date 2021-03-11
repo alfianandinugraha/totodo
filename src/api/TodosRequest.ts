@@ -4,7 +4,12 @@ import { Todo, TodoBody, User } from 'Types'
 const fetchTodosRequest = (
   user: User
 ): Promise<firebase.firestore.QuerySnapshot<firebase.firestore.DocumentData>> =>
-  firebase.firestore().collection('todos').where('uid', '==', user.uid).get()
+  firebase
+    .firestore()
+    .collection('todos')
+    .where('uid', '==', user.uid)
+    .orderBy('todoId', 'desc')
+    .get()
 
 const deleteTodoRequest = (todo: Todo): Promise<void> =>
   firebase.firestore().collection('todos').doc(todo.docId).delete()
