@@ -114,9 +114,22 @@ export default function Home(): ReactElement {
       .catch(() => alert('Todo gagal ditambahkan'))
   }
 
-  const deleteTodoHandler = (todoId: Todo) => {
+  const deleteTodoHandler = (todo: Todo) => {
     console.log('deleting todo...')
-    console.log(todoId)
+    console.log(todo)
+    firebase
+      .firestore()
+      .collection('todos')
+      .where('todoId', '==', todo.todoId)
+      .get()
+      .then((val) => {
+        const [docId] = val.docs.map((item) => item.id)
+
+        return firebase.firestore().collection('todos').doc(docId).delete()
+      })
+      .then(() => {
+        console.log('Todo deleted !')
+      })
   }
 
   useEffect(() => {
