@@ -71,6 +71,7 @@ export default function TodoCard({
       ...payload,
       description: newDescription,
     })
+    setIsFormUpdateShow(false)
     console.log(newDescription)
   }
 
