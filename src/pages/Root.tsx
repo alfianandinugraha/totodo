@@ -29,9 +29,9 @@ export default function Root(): ReactElement {
           .get()
           .then((val) => {
             const [userInfoResult] = val.docs.map((doc) => doc.data()) as User[]
+            if (!userInfoResult) return
             setUserInfo(userInfoResult)
             setIsUserInfoLoading(false)
-            console.log(userInfoResult)
           })
       }
     })
