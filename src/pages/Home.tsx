@@ -109,15 +109,19 @@ export default function Home(): ReactElement {
   }
 
   useEffect(() => {
+    if (!userInfo.uid) return
     firebase
       .firestore()
       .collection('todos')
       .where('uid', '==', userInfo.uid)
       .get()
       .then((val) => {
-        val.docs.forEach((item) => console.log(item.data()))
+        console.log('fetching todos ...')
+        const todosData = val.docs.map((item) => item.data()) as Todo[]
+        console.log(todosData)
+        setTodos(todosData)
       })
-  }, [])
+  }, [userInfo.uid])
 
   return (
     <Container maxWidth="sm">
