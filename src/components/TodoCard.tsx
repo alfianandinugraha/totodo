@@ -54,10 +54,7 @@ const useStyles = makeStyles(({ spacing, breakpoints }) => ({
   },
 }))
 
-export default function TodoCard({
-  payload,
-  onButtonClick,
-}: TodoCardProps): ReactElement {
+function TodoCard({ payload, onButtonClick }: TodoCardProps): ReactElement {
   const [isFormUpdateShow, setIsFormUpdateShow] = useState(false)
   const classes = useStyles()
 
@@ -132,3 +129,5 @@ export default function TodoCard({
     </div>
   )
 }
+
+export default React.memo(TodoCard)
