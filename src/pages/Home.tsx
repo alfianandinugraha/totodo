@@ -7,6 +7,7 @@ import {
 } from '@/api/TodosRequest'
 import TodoCard, { TodoButtonType } from '@/components/TodoCard'
 import { initialTodo } from '@/initial/Todos'
+import initialUser from '@/initial/User'
 import AuthContext from '@/store/AuthContext'
 import UserContext from '@/store/UserContext'
 import firebase from '@/utils/firebase'
@@ -62,7 +63,12 @@ const useStyles = makeStyles(({ spacing }) => ({
 
 export default function Home(): ReactElement {
   const { isLoggedIn, setIsLoggedIn, isAuthLoading } = useContext(AuthContext)
-  const { userInfo, isUserInfoLoading } = useContext(UserContext)
+  const {
+    userInfo,
+    isUserInfoLoading,
+    setUserInfo,
+    setIsUserInfoLoading,
+  } = useContext(UserContext)
   const [todos, setTodos] = useState<Todo[]>([])
   const history = useHistory()
   const classes = useStyles()
@@ -73,6 +79,8 @@ export default function Home(): ReactElement {
       .signOut()
       .then(() => {
         setIsLoggedIn(false)
+        setUserInfo(initialUser)
+        setIsUserInfoLoading(true)
         history.push('/login')
       })
   }
