@@ -12,10 +12,14 @@ declare module 'Types' {
     setIsUserInfoLoading: (status: boolean) => void
   }
 
-  export interface Todo {
+  export interface TodoBody {
     todoId: string
     description: string
     uid: string
     isFinish: boolean
+  }
+
+  export interface Todo extends TodoBody {
+    docId: string
   }
 }

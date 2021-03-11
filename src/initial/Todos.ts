@@ -5,6 +5,7 @@ const initialTodo: Todo = {
   description: '',
   todoId: '',
   isFinish: false,
+  docId: '',
 }
 
 const initialTodos: Todo[] = [initialTodo, initialTodo, initialTodo]

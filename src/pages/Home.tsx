@@ -89,9 +89,12 @@ export default function Home(): ReactElement {
     firebase
       .firestore()
       .collection('todos')
-      .add({ description, todoId, uid })
-      .then(() => {
-        setTodos([{ description, todoId, uid, isFinish: false }, ...todos])
+      .add({ description, todoId, uid, isFinish: false })
+      .then((res) => {
+        setTodos([
+          { description, todoId, uid, isFinish: false, docId: res.id },
+          ...todos,
+        ])
         alert('Todo berhasil ditambahan')
       })
       .catch(() => alert('Todo gagal ditambahkan'))
@@ -167,6 +170,7 @@ export default function Home(): ReactElement {
         const todosData = val.docs.map((item) => ({
           ...initialTodo,
           ...item.data(),
+          docId: item.id,
         })) as Todo[]
         console.log(todosData)
         setTodos(todosData)
