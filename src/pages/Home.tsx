@@ -124,6 +124,11 @@ export default function Home(): ReactElement {
       })
   }
 
+  const updateTodo = (todo: Todo) => {
+    console.log('updating todo...')
+    console.log(todo)
+  }
+
   const finishTodo = (todo: Todo) => {
     console.log('finishing todo...')
     console.log(todo)
@@ -151,6 +156,7 @@ export default function Home(): ReactElement {
   ) => {
     if (type === 'DELETE') deleteTodoHandler(payload)
     if (type === 'FINISH') finishTodo(payload)
+    if (type === 'UPDATE') updateTodo(payload)
   }
 
   useEffect(() => {

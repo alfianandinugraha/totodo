@@ -67,6 +67,10 @@ export default function TodoCard({
     const newDescription = target.description.value
 
     if (newDescription === payload.description) return
+    onButtonClick('UPDATE', {
+      ...payload,
+      description: newDescription,
+    })
     console.log(newDescription)
   }
 
