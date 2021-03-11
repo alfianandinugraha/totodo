@@ -3,6 +3,7 @@ import {
   deleteTodoRequest,
   fetchTodosRequest,
   finishTodoRequest,
+  updateTodoRequest,
 } from '@/api/TodosRequest'
 import TodoCard, { TodoButtonType } from '@/components/TodoCard'
 import { initialTodo } from '@/initial/Todos'
@@ -127,6 +128,14 @@ export default function Home(): ReactElement {
   const updateTodo = (todo: Todo) => {
     console.log('updating todo...')
     console.log(todo)
+    updateTodoRequest(todo).then(() => {
+      console.log('todo updated !')
+      setTodos((prevTodos) =>
+        prevTodos.map((todoItem) =>
+          todoItem.docId === todo.docId ? todo : todoItem
+        )
+      )
+    })
   }
 
   const finishTodo = (todo: Todo) => {

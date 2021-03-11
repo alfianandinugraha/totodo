@@ -17,6 +17,14 @@ const finishTodoRequest = (todo: Todo): Promise<void> =>
     isFinish: !todo.isFinish,
   })
 
+const updateTodoRequest = (todo: Todo): Promise<void> =>
+  firebase.firestore().collection('todos').doc(todo.docId).update({
+    todoId: todo.docId,
+    description: todo.description,
+    uid: todo.uid,
+    isFinish: todo.isFinish,
+  })
+
 const addTodoRequest = (
   todo: TodoBody
 ): Promise<
@@ -28,4 +36,5 @@ export {
   deleteTodoRequest,
   finishTodoRequest,
   addTodoRequest,
+  updateTodoRequest,
 }
