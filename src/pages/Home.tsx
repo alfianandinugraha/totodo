@@ -128,6 +128,7 @@ export default function Home(): ReactElement {
         return firebase.firestore().collection('todos').doc(docId).delete()
       })
       .then(() => {
+        setTodos(todos.filter((todoItem) => todoItem.todoId !== todo.todoId))
         console.log('Todo deleted !')
       })
   }
