@@ -52,24 +52,6 @@ const useStyles = makeStyles(({ spacing }) => ({
   },
 }))
 
-const initialTodos: Todo[] = [
-  {
-    uid: '2EI1nKMDDlSsHcmUSq05RWUIawt2',
-    description: 'hello',
-    todoId: '1023098123',
-  },
-  {
-    uid: '2EI1nKMDDlSsHcmUSq05RWUIawt2',
-    description: 'hello',
-    todoId: '1023098124',
-  },
-  {
-    uid: '2EI1nKMDDlSsHcmUSq05RWUIawt2',
-    description: 'hello',
-    todoId: '1023098125',
-  },
-]
-
 export default function Home(): ReactElement {
   const { isLoggedIn, setIsLoggedIn, isAuthLoading } = useContext(AuthContext)
   const { userInfo, isUserInfoLoading } = useContext(UserContext)
