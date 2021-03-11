@@ -38,7 +38,11 @@ export default function TodoCard({
   const classes = useStyles()
   return (
     <div className={classes.root}>
-      <Typography>
+      <Typography
+        style={{
+          color: payload.isFinish ? '#BBBBBB' : 'inherit',
+        }}
+      >
         {payload.isFinish ? <s>{payload.description}</s> : payload.description}
       </Typography>
       <div>
@@ -48,7 +52,7 @@ export default function TodoCard({
             color="primary"
             onClick={() => onButtonClick('FINISH', payload)}
           >
-            Finish
+            {payload.isFinish ? 'Unfinish' : 'Finish'}
           </Button>
           <Button
             variant="outlined"
