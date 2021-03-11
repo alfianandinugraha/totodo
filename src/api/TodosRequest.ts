@@ -9,4 +9,12 @@ const fetchTodosRequest = (
 const deleteTodoRequest = (todo: Todo): Promise<void> =>
   firebase.firestore().collection('todos').doc(todo.docId).delete()
 
-export { fetchTodosRequest, deleteTodoRequest }
+const finishTodoRequest = (todo: Todo): Promise<void> =>
+  firebase.firestore().collection('todos').doc(todo.docId).update({
+    todoId: todo.docId,
+    description: todo.description,
+    uid: todo.uid,
+    isFinish: !todo.isFinish,
+  })
+
+export { fetchTodosRequest, deleteTodoRequest, finishTodoRequest }

@@ -1,4 +1,8 @@
-import { deleteTodoRequest, fetchTodosRequest } from '@/api/TodosRequest'
+import {
+  deleteTodoRequest,
+  fetchTodosRequest,
+  finishTodoRequest,
+} from '@/api/TodosRequest'
 import TodoCard, { TodoButtonType } from '@/components/TodoCard'
 import { initialTodo } from '@/initial/Todos'
 import AuthContext from '@/store/AuthContext'
@@ -118,20 +122,7 @@ export default function Home(): ReactElement {
   const finishTodo = (todo: Todo) => {
     console.log('finishing todo...')
     console.log(todo)
-    firebase
-      .firestore()
-      .collection('todos')
-      .where('todoId', '==', todo.todoId)
-      .get()
-      .then((val) => {
-        const [docId] = val.docs.map((item) => item.id)
-
-        return firebase
-          .firestore()
-          .collection('todos')
-          .doc(docId)
-          .update({ ...todo, isFinish: !todo.isFinish })
-      })
+    finishTodoRequest(todo)
       .then(() => {
         setTodos((prevTodos) =>
           prevTodos.map((todoState) => ({
@@ -143,6 +134,9 @@ export default function Home(): ReactElement {
           }))
         )
         console.log('Todo finished !')
+      })
+      .catch(() => {
+        console.error('Gagal menyelesaikan todo...')
       })
   }
 
