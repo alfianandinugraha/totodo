@@ -15,6 +15,10 @@ interface TodoCardProps {
   onButtonClick: (type: TodoButtonType, payload: Todo) => void
 }
 
+interface UpdateForm {
+  description: HTMLInputElement
+}
+
 const useStyles = makeStyles(({ spacing, breakpoints }) => ({
   root: {
     padding: spacing(2),
@@ -56,6 +60,16 @@ export default function TodoCard({
 }: TodoCardProps): ReactElement {
   const [isFormUpdateShow, setIsFormUpdateShow] = useState(false)
   const classes = useStyles()
+
+  const formUpdateHandler = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const target: UpdateForm = e.target as never
+    const newDescription = target.description.value
+
+    if (newDescription === payload.description) return
+    console.log(newDescription)
+  }
+
   return (
     <div className={classes.root}>
       <div className={classes.content}>
@@ -98,9 +112,13 @@ export default function TodoCard({
       </div>
       {isFormUpdateShow && (
         <div className={classes.formUpdateWrapper}>
-          <form className={classes.formUpdate}>
-            <TextField fullWidth value={payload.description} />
-            <Button variant="contained" color="primary">
+          <form className={classes.formUpdate} onSubmit={formUpdateHandler}>
+            <TextField
+              fullWidth
+              defaultValue={payload.description}
+              name="description"
+            />
+            <Button variant="contained" color="primary" type="submit">
               Update
             </Button>
           </form>
