@@ -1,3 +1,4 @@
+import { fetchTodosRequest } from '@/api/TodosRequest'
 import TodoCard, { TodoButtonType } from '@/components/TodoCard'
 import { initialTodo } from '@/initial/Todos'
 import AuthContext from '@/store/AuthContext'
@@ -160,21 +161,16 @@ export default function Home(): ReactElement {
 
   useEffect(() => {
     if (isUserInfoLoading) return
-    firebase
-      .firestore()
-      .collection('todos')
-      .where('uid', '==', userInfo.uid)
-      .get()
-      .then((val) => {
-        console.log('fetching todos ...')
-        const todosData = val.docs.map((item) => ({
-          ...initialTodo,
-          ...item.data(),
-          docId: item.id,
-        })) as Todo[]
-        console.log(todosData)
-        setTodos(todosData)
-      })
+    fetchTodosRequest(userInfo).then((val) => {
+      console.log('fetching todos ...')
+      const todosData = val.docs.map((item) => ({
+        ...initialTodo,
+        ...item.data(),
+        docId: item.id,
+      })) as Todo[]
+      console.log(todosData)
+      setTodos(todosData)
+    })
   }, [isUserInfoLoading])
 
   return (
