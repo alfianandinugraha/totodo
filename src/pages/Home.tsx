@@ -116,11 +116,43 @@ export default function Home(): ReactElement {
       })
   }
 
+  const finishTodo = (todo: Todo) => {
+    console.log('finishing todo...')
+    console.log(todo)
+    firebase
+      .firestore()
+      .collection('todos')
+      .where('todoId', '==', todo.todoId)
+      .get()
+      .then((val) => {
+        const [docId] = val.docs.map((item) => item.id)
+
+        return firebase
+          .firestore()
+          .collection('todos')
+          .doc(docId)
+          .update({ ...todo, isFinish: !todo.isFinish })
+      })
+      .then(() => {
+        setTodos((prevTodos) =>
+          prevTodos.map((todoState) => ({
+            ...todoState,
+            isFinish:
+              todo.todoId === todoState.todoId
+                ? !todoState.isFinish
+                : todoState.isFinish,
+          }))
+        )
+        console.log('Todo finished !')
+      })
+  }
+
   const receiveButtonTodoCardHandler = (
     type: TodoButtonType,
     payload: Todo
   ) => {
     if (type === 'DELETE') deleteTodoHandler(payload)
+    if (type === 'FINISH') finishTodo(payload)
   }
 
   useEffect(() => {
