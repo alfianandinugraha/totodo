@@ -1,4 +1,5 @@
 import {
+  addTodoRequest,
   deleteTodoRequest,
   fetchTodosRequest,
   finishTodoRequest,
@@ -17,7 +18,7 @@ import {
 } from '@material-ui/core'
 import React, { ReactElement, useContext, useEffect, useState } from 'react'
 import { Link, useHistory } from 'react-router-dom'
-import { Todo } from 'Types'
+import { Todo, TodoBody } from 'Types'
 
 interface FormTodo {
   description: HTMLInputElement
@@ -91,10 +92,14 @@ export default function Home(): ReactElement {
     }
 
     console.log({ description, todoId, uid })
-    firebase
-      .firestore()
-      .collection('todos')
-      .add({ description, todoId, uid, isFinish: false })
+    const todoBody: TodoBody = {
+      description,
+      todoId,
+      uid,
+      isFinish: false,
+    }
+
+    addTodoRequest(todoBody)
       .then((res) => {
         setTodos([
           { description, todoId, uid, isFinish: false, docId: res.id },

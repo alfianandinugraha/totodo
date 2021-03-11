@@ -1,5 +1,5 @@
 import firebase from '@/utils/firebase'
-import { Todo, User } from 'Types'
+import { Todo, TodoBody, User } from 'Types'
 
 const fetchTodosRequest = (
   user: User
@@ -17,4 +17,15 @@ const finishTodoRequest = (todo: Todo): Promise<void> =>
     isFinish: !todo.isFinish,
   })
 
-export { fetchTodosRequest, deleteTodoRequest, finishTodoRequest }
+const addTodoRequest = (
+  todo: TodoBody
+): Promise<
+  firebase.firestore.DocumentReference<firebase.firestore.DocumentData>
+> => firebase.firestore().collection('todos').add(todo)
+
+export {
+  fetchTodosRequest,
+  deleteTodoRequest,
+  finishTodoRequest,
+  addTodoRequest,
+}
