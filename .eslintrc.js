@@ -24,6 +24,7 @@ const config = {
     project: './tsconfig.eslint.json',
   },
   plugins: ['react', '@typescript-eslint', 'prettier'],
+  ignorePatterns: ['.eslintrc.js', 'index.d.ts'],
   rules: {
     'no-console': [NODE_ENV === 'dev' ? 'off' : 'error'],
     'import/newline-after-import': 'error',
