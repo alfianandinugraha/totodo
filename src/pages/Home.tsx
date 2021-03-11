@@ -70,7 +70,7 @@ const initialTodos: Todo[] = [
 
 export default function Home(): ReactElement {
   const { isLoggedIn, setIsLoggedIn, userInfo } = useContext(AuthContext)
-  const [todos, setTodos] = useState<Todo[]>()
+  const [todos, setTodos] = useState<Todo[]>([])
   const history = useHistory()
   const classes = useStyles()
 
@@ -104,7 +104,10 @@ export default function Home(): ReactElement {
       .firestore()
       .collection('todos')
       .add({ description, todoId, uid })
-      .then(() => alert('Todo berhasil ditambahan'))
+      .then(() => {
+        setTodos([{ description, todoId, uid }, ...todos])
+        alert('Todo berhasil ditambahan')
+      })
       .catch(() => alert('Todo gagal ditambahkan'))
   }
 
@@ -167,9 +170,10 @@ export default function Home(): ReactElement {
               </div>
             </form>
             <div className={classes.listTodoContainer}>
-              {initialTodos.map((todo) => (
-                <TodoCard payload={todo} key={todo.todoId} />
-              ))}
+              {todos.length !== 0 &&
+                todos.map((todo) => (
+                  <TodoCard payload={todo} key={todo.todoId} />
+                ))}
             </div>
           </>
         )}
