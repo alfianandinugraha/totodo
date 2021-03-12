@@ -53,6 +53,7 @@ const config = {
     '@typescript-eslint/no-var-requires': ['off'],
     'import/order': 'error',
     'import/first': 'error',
+    'import/prefer-default-export': 'off'
   },
 }
 
