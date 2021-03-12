@@ -1,3 +1,4 @@
+import { updateUserRequest } from '@/api/UserRequest'
 import HeaderDashboard from '@/components/HeaderDashboard'
 import UserContext from '@/store/UserContext'
 import {
@@ -8,6 +9,7 @@ import {
   makeStyles,
 } from '@material-ui/core'
 import React, { ReactElement, useContext } from 'react'
+import { User } from 'Types'
 
 interface FormUpdateProfile {
   fullname: HTMLInputElement
@@ -25,7 +27,7 @@ const useStyles = makeStyles(({ spacing }) => ({
 }))
 
 export default function ProfilePage(): ReactElement {
-  const { userInfo } = useContext(UserContext)
+  const { userInfo, setUserInfo } = useContext(UserContext)
   const classes = useStyles()
 
   const submitFormHandler = (e: React.FormEvent<HTMLFormElement>) => {
@@ -34,7 +36,23 @@ export default function ProfilePage(): ReactElement {
     const target: FormUpdateProfile = e.target as never
     const fullname = target.fullname.value
 
-    console.log(fullname)
+    if (fullname === userInfo.fullname) return
+
+    if (!fullname) {
+      alert('nama tidak boleh kosong')
+      return
+    }
+
+    const newUserInfo: User = { ...userInfo, fullname }
+
+    updateUserRequest({ ...userInfo, fullname })
+      .then(() => {
+        setUserInfo(newUserInfo)
+        alert('Nama berhasil di perbaharui')
+      })
+      .catch(() => {
+        alert('Update nama gagal')
+      })
   }
 
   return (
