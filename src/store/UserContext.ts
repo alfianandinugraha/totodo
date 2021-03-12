@@ -5,6 +5,7 @@ const initialUser: User = {
   fullname: '',
   email: '',
   uid: '',
+  docId: '',
 }
 
 const intialUserContext: AuthContextProps = {

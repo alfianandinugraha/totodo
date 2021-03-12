@@ -4,6 +4,7 @@ import firebase from '@/utils/firebase'
 import AuthContext from '@/store/AuthContext'
 import UserContext from '@/store/UserContext'
 import { User } from 'Types'
+import initialUser from '@/initial/User'
 import Home from './Home'
 import Login from './auth/Login'
 import Register from './auth/Register'
@@ -30,8 +31,13 @@ export default function Root(): ReactElement {
           .where('uid', '==', user.uid)
           .get()
           .then((val) => {
-            const [userInfoResult] = val.docs.map((doc) => doc.data()) as User[]
+            const [userInfoResult] = val.docs.map((doc) => ({
+              ...initialUser,
+              ...doc.data(),
+              docId: doc.id,
+            })) as User[]
             if (!userInfoResult) return
+            console.log(userInfoResult)
             setUserInfo(userInfoResult)
             setIsUserInfoLoading(false)
           })

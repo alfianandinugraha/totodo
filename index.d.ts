@@ -1,8 +1,12 @@
 declare module 'Types' {
-  export interface User {
+  export interface UserBody {
     uid: string
     fullname: string
     email: string
+  }
+
+  export interface User extends UserBody {
+    docId: string
   }
 
   export interface AuthContextProps {
