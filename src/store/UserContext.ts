@@ -5,7 +5,14 @@ const initialUser: User = {
   fullname: '',
   email: '',
   uid: '',
-  docId: '',
+  createdAt: {
+    seconds: 0,
+    nanoseconds: 0,
+  },
+  updatedAt: {
+    seconds: 0,
+    nanoseconds: 0,
+  },
 }
 
 const intialUserContext: AuthContextProps = {

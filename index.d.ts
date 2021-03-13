@@ -1,12 +1,21 @@
+import firebase from 'firebase'
+
 declare module 'Types' {
   export interface UserBody {
-    uid: string
     fullname: string
     email: string
+    createdAt: {
+      seconds: number
+      nanoseconds: number
+    }
+    updatedAt: {
+      seconds: number
+      nanoseconds: number
+    }
   }
 
   export interface User extends UserBody {
-    docId: string
+    uid: string
   }
 
   export interface AuthContextProps {

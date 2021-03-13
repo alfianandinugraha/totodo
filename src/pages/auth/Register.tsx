@@ -44,17 +44,20 @@ export default function Register(): ReactElement {
         .auth()
         .createUserWithEmailAndPassword(email, password)
 
-      const firestoreResult = await firebase
-        .firestore()
-        .collection('users')
-        .add({
-          uid: authResult.user?.uid,
-          fullname,
-          email,
-        })
+      if (authResult.user) {
+        await firebase
+          .firestore()
+          .collection('users-v2')
+          .doc(authResult.user.uid)
+          .set({
+            fullname,
+            email,
+            createdAt: firebase.firestore.Timestamp.fromDate(new Date()),
+            updatedAt: firebase.firestore.Timestamp.fromDate(new Date()),
+          })
+      }
 
       console.log({ authResult })
-      console.log({ firestoreResult })
       alert('Pendaftaran berhasil')
       history.push('/')
     } catch (err) {

@@ -3,7 +3,7 @@ import { Redirect, Route, Switch } from 'react-router-dom'
 import firebase from '@/utils/firebase'
 import AuthContext from '@/store/AuthContext'
 import UserContext from '@/store/UserContext'
-import { User } from 'Types'
+import { UserBody } from 'Types'
 import initialUser from '@/initial/User'
 import Home from './Home'
 import Login from './auth/Login'
@@ -27,18 +27,18 @@ export default function Root(): ReactElement {
       if (user) {
         firebase
           .firestore()
-          .collection('users')
-          .where('uid', '==', user.uid)
+          .collection('users-v2')
+          .doc(user.uid)
           .get()
           .then((val) => {
-            const [userInfoResult] = val.docs.map((doc) => ({
+            const userData = {
               ...initialUser,
-              ...doc.data(),
-              docId: doc.id,
-            })) as User[]
-            if (!userInfoResult) return
-            console.log(userInfoResult)
-            setUserInfo(userInfoResult)
+              ...(val.data() as UserBody),
+              uid: user.uid,
+            }
+            if (!userData) return
+            console.log(userData)
+            setUserInfo(userData)
             setIsUserInfoLoading(false)
           })
       }
