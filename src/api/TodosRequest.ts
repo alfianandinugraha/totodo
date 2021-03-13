@@ -11,7 +11,7 @@ const fetchTodosRequest = (
     .firestore()
     .collection(TODOS_COLLECTION)
     .where('uid', '==', user.uid)
-    .orderBy('todoId', 'desc')
+    .orderBy('createdAt', 'desc')
     .get()
 
 const deleteTodoRequest = (todo: Todo): Promise<void> =>
