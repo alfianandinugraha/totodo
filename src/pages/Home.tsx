@@ -68,6 +68,7 @@ export default function Home(): ReactElement {
   useTitlePage('Totodo - Catat aktifitas mu !')
   const { isLoggedIn, isAuthLoading } = useContext(AuthContext)
   const { userInfo, isUserInfoLoading } = useContext(UserContext)
+  const [isAddTodoRequestLoading, setIsAddTodoRequestLoading] = useState(false)
   const [isFetchTodoLoading, setIsFetchTodoLoading] = useState(true)
   const [errorInputTodoMessage, setErrorInputTodoMessage] = useState<
     string | undefined
@@ -107,15 +108,15 @@ export default function Home(): ReactElement {
       createdAt: firebaseTimestamp,
       updatedAt: firebaseTimestamp,
     }
-
+    setIsAddTodoRequestLoading(true)
     addTodoRequest(todoBody)
       .then((res) => {
         setTodos([{ ...todoBody, docId: res.id }, ...todos])
         setErrorInputTodoMessage('')
         currentTarget.description.value = ''
-        alert('Todo berhasil ditambahan')
       })
       .catch(() => alert('Todo gagal ditambahkan'))
+      .finally(() => setIsAddTodoRequestLoading(false))
   }
 
   const deleteTodoHandler = (todo: Todo) => {
@@ -222,7 +223,7 @@ export default function Home(): ReactElement {
                   color="primary"
                   fullWidth
                   type="submit"
-                  isLoading={isUserInfoLoading}
+                  isLoading={isUserInfoLoading || isAddTodoRequestLoading}
                 >
                   Tambah Aktifitas
                 </ButtonForm>
