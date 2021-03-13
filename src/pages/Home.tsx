@@ -10,7 +10,10 @@ import TodoCard, { TodoButtonType } from '@/components/TodoCard'
 import { initialTodo } from '@/initial/Todos'
 import AuthContext from '@/store/AuthContext'
 import UserContext from '@/store/UserContext'
-import { getFirebaseTimestamp } from '@/utils/firebase'
+import {
+  checkMaxLengthTodoDescrition,
+  getFirebaseTimestamp,
+} from '@/utils/firebase'
 import {
   Container,
   makeStyles,
@@ -63,6 +66,9 @@ export default function Home(): ReactElement {
   const { isLoggedIn, isAuthLoading } = useContext(AuthContext)
   const { userInfo, isUserInfoLoading } = useContext(UserContext)
   const [isFetchTodoLoading, setIsFetchTodoLoading] = useState(true)
+  const [errorInputTodoMessage, setErrorInputTodoMessage] = useState<
+    string | undefined
+  >()
   const [todos, setTodos] = useState<Todo[]>([])
   const classes = useStyles()
 
@@ -81,6 +87,13 @@ export default function Home(): ReactElement {
       return
     }
 
+    const validateLengthDescription = checkMaxLengthTodoDescrition(description)
+
+    if (!validateLengthDescription.isValid) {
+      setErrorInputTodoMessage(validateLengthDescription.message)
+      return
+    }
+
     console.log({ description, todoId, uid })
     const firebaseTimestamp = getFirebaseTimestamp()
     const todoBody: TodoBody = {
@@ -95,6 +108,8 @@ export default function Home(): ReactElement {
     addTodoRequest(todoBody)
       .then((res) => {
         setTodos([{ ...todoBody, docId: res.id }, ...todos])
+        setErrorInputTodoMessage('')
+        currentTarget.description.value = ''
         alert('Todo berhasil ditambahan')
       })
       .catch(() => alert('Todo gagal ditambahkan'))
@@ -193,6 +208,8 @@ export default function Home(): ReactElement {
                   name="description"
                   label="Deskripsi"
                   placeholder="Makan seblak"
+                  error={!!errorInputTodoMessage}
+                  helperText={errorInputTodoMessage}
                   fullWidth
                 />
               </div>

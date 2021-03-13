@@ -1,3 +1,4 @@
+import { checkMaxLengthTodoDescrition } from '@/utils/firebase'
 import {
   Button,
   ButtonGroup,
@@ -56,18 +57,30 @@ const useStyles = makeStyles(({ spacing, breakpoints }) => ({
 
 function TodoCard({ payload, onButtonClick }: TodoCardProps): ReactElement {
   const [isFormUpdateShow, setIsFormUpdateShow] = useState(false)
+  const [errorInputTodoMessage, setErrorInputTodoMessage] = useState<
+    string | undefined
+  >()
   const classes = useStyles()
 
   const formUpdateHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const target: UpdateForm = e.target as never
     const newDescription = target.description.value
+    const validateLengthDescription = checkMaxLengthTodoDescrition(
+      newDescription
+    )
+
+    if (!validateLengthDescription.isValid) {
+      setErrorInputTodoMessage(validateLengthDescription.message)
+      return
+    }
 
     if (newDescription === payload.description) return
     onButtonClick('UPDATE', {
       ...payload,
       description: newDescription,
     })
+    setErrorInputTodoMessage('')
     setIsFormUpdateShow(false)
     console.log(newDescription)
   }
@@ -98,7 +111,10 @@ function TodoCard({ payload, onButtonClick }: TodoCardProps): ReactElement {
             <Button
               variant="outlined"
               color={isFormUpdateShow ? 'secondary' : 'primary'}
-              onClick={() => setIsFormUpdateShow(!isFormUpdateShow)}
+              onClick={() => {
+                setIsFormUpdateShow(!isFormUpdateShow)
+                setErrorInputTodoMessage('')
+              }}
             >
               {isFormUpdateShow ? 'Close' : 'Update'}
             </Button>
@@ -119,6 +135,8 @@ function TodoCard({ payload, onButtonClick }: TodoCardProps): ReactElement {
               fullWidth
               defaultValue={payload.description}
               name="description"
+              error={!!errorInputTodoMessage}
+              helperText={errorInputTodoMessage}
             />
             <Button variant="contained" color="primary" type="submit">
               Update
