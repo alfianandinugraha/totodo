@@ -1,6 +1,7 @@
 import { updateUserRequest } from '@/api/UserRequest'
 import HeaderDashboard from '@/components/HeaderDashboard'
 import UserContext from '@/store/UserContext'
+import { getFirebaseTimestamp } from '@/utils/firebase'
 import {
   Container,
   TextField,
@@ -43,9 +44,13 @@ export default function ProfilePage(): ReactElement {
       return
     }
 
-    const newUserInfo: User = { ...userInfo, fullname }
+    const newUserInfo: User = {
+      ...userInfo,
+      fullname,
+      updatedAt: getFirebaseTimestamp(),
+    }
 
-    updateUserRequest({ ...userInfo, fullname })
+    updateUserRequest(newUserInfo)
       .then(() => {
         setUserInfo(newUserInfo)
         alert('Nama berhasil di perbaharui')

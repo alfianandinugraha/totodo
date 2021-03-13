@@ -1,19 +1,6 @@
 import { createContext } from 'react'
 import { User, AuthContextProps } from 'Types'
-
-const initialUser: User = {
-  fullname: '',
-  email: '',
-  uid: '',
-  createdAt: {
-    seconds: 0,
-    nanoseconds: 0,
-  },
-  updatedAt: {
-    seconds: 0,
-    nanoseconds: 0,
-  },
-}
+import initialUser from '@/initial/User'
 
 const intialUserContext: AuthContextProps = {
   userInfo: initialUser,

@@ -1,17 +1,12 @@
+import { getFirebaseTimestamp } from '@/utils/firebase'
 import { User } from 'Types'
 
 const initialUser: User = {
   fullname: '',
   email: '',
   uid: '',
-  createdAt: {
-    seconds: 0,
-    nanoseconds: 0,
-  },
-  updatedAt: {
-    seconds: 0,
-    nanoseconds: 0,
-  },
+  createdAt: getFirebaseTimestamp(),
+  updatedAt: getFirebaseTimestamp(),
 }
 
 export default initialUser
