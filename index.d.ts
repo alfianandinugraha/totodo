@@ -1,17 +1,16 @@
 import firebase from 'firebase'
 
 declare module 'Types' {
+  export interface Timestamp {
+    seconds: number
+    nanoseconds: number
+  }
+
   export interface UserBody {
     fullname: string
     email: string
-    createdAt: {
-      seconds: number
-      nanoseconds: number
-    }
-    updatedAt: {
-      seconds: number
-      nanoseconds: number
-    }
+    createdAt: Timestamp
+    updatedAt: Timestamp
   }
 
   export interface User extends UserBody {
