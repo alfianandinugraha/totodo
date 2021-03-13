@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core'
 
-const useStyles = makeStyles(({ spacing }) => ({
+const useStyles = makeStyles(({ spacing, breakpoints }) => ({
   formRoot: {
     display: 'flex',
     flexDirection: 'column',
@@ -16,6 +16,20 @@ const useStyles = makeStyles(({ spacing }) => ({
   },
   buttonGroup: {
     display: 'flex',
+    flexDirection: 'column',
+    [breakpoints.up('sm')]: {
+      alignItems: 'baseline',
+      flexDirection: 'row',
+    },
+  },
+  helperRedirect: {
+    display: 'flex',
+    marginTop: '1rem',
+    alignItems: 'center',
+    [breakpoints.up('sm')]: {
+      marginTop: '0',
+      marginLeft: '1rem',
+    },
   },
 }))
 

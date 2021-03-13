@@ -67,13 +67,7 @@ export default function Login(): ReactElement {
           <Button variant="contained" color="primary" type="submit">
             Login
           </Button>
-          <div
-            style={{
-              display: 'flex',
-              marginLeft: '1rem',
-              alignItems: 'center',
-            }}
-          >
+          <div className={classes.helperRedirect}>
             <Typography>Belum memiliki akun ?&nbsp;</Typography>
             <Typography>
               <Link to="/register">Register</Link>

@@ -121,13 +121,7 @@ export default function Register(): ReactElement {
           <Button variant="contained" color="primary" type="submit">
             Register
           </Button>
-          <div
-            style={{
-              display: 'flex',
-              marginLeft: '1rem',
-              alignItems: 'center',
-            }}
-          >
+          <div className={classes.helperRedirect}>
             <Typography>Sudah memiliki akun ?&nbsp;</Typography>
             <Typography>
               <Link to="/login">Login</Link>
