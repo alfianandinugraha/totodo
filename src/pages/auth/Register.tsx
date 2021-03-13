@@ -75,13 +75,12 @@ export default function Register(): ReactElement {
             updatedAt: firebase.firestore.Timestamp.fromDate(new Date()),
           })
         setErrorInputFullname('')
-        setIsRegisterRequestLoading(false)
       }
       history.push('/')
     } catch (err) {
-      console.log(err.message)
       alert(`Pendaftaran gagal. Message : ${err.message}`)
     }
+    setIsRegisterRequestLoading(false)
   }
 
   return (

@@ -39,13 +39,13 @@ export default function Login(): ReactElement {
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then(() => {
-        setIsLoginRequestLoading(false)
         history.push('/')
       })
       .catch((err) => {
         console.log(err)
         alert(`Login gagal. Message : ${err.message}`)
       })
+      .finally(() => setIsLoginRequestLoading(false))
   }
 
   return (
