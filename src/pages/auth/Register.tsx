@@ -1,9 +1,10 @@
+import ButtonForm from '@/components/ButtonForm'
 import useTitlePage from '@/hooks/useTitlePage'
 import firebase, {
   checkMaxLengthUserFullname,
   USERS_COLLECTION,
 } from '@/utils/firebase'
-import { Container, Typography, TextField, Button } from '@material-ui/core'
+import { Container, Typography, TextField } from '@material-ui/core'
 import React, { ReactElement, useState } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import { FormLogin } from './Login'
@@ -16,6 +17,9 @@ interface FormRegister extends FormLogin {
 
 export default function Register(): ReactElement {
   useTitlePage('Register')
+  const [isRegisterRequestLoading, setIsRegisterRequestLoading] = useState(
+    false
+  )
   const classes = useStyles()
   const history = useHistory()
   const [errorInputFullname, setErrorInputFullname] = useState<
@@ -53,7 +57,7 @@ export default function Register(): ReactElement {
     }
 
     console.log({ email, password, repassword, fullname })
-
+    setIsRegisterRequestLoading(true)
     try {
       const authResult = await firebase
         .auth()
@@ -71,10 +75,8 @@ export default function Register(): ReactElement {
             updatedAt: firebase.firestore.Timestamp.fromDate(new Date()),
           })
         setErrorInputFullname('')
+        setIsRegisterRequestLoading(false)
       }
-
-      console.log({ authResult })
-      alert('Pendaftaran berhasil')
       history.push('/')
     } catch (err) {
       console.log(err.message)
@@ -118,9 +120,14 @@ export default function Register(): ReactElement {
           />
         </div>
         <div className={classes.buttonGroup}>
-          <Button variant="contained" color="primary" type="submit">
+          <ButtonForm
+            variant="contained"
+            color="primary"
+            type="submit"
+            isLoading={isRegisterRequestLoading}
+          >
             Register
-          </Button>
+          </ButtonForm>
           <div className={classes.helperRedirect}>
             <Typography>Sudah memiliki akun ?&nbsp;</Typography>
             <Typography>

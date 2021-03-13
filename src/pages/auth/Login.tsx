@@ -1,7 +1,8 @@
+import ButtonForm from '@/components/ButtonForm'
 import useTitlePage from '@/hooks/useTitlePage'
 import firebase from '@/utils/firebase'
-import { Button, Container, TextField, Typography } from '@material-ui/core'
-import React, { ReactElement } from 'react'
+import { Container, TextField, Typography } from '@material-ui/core'
+import React, { ReactElement, useState } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import useStyles from './useStyles'
 
@@ -12,6 +13,7 @@ export interface FormLogin {
 
 export default function Login(): ReactElement {
   useTitlePage('Login')
+  const [isLoginRequestLoading, setIsLoginRequestLoading] = useState(false)
   const history = useHistory()
   const classes = useStyles()
 
@@ -32,12 +34,12 @@ export default function Login(): ReactElement {
     }
 
     console.log({ email, password })
+    setIsLoginRequestLoading(true)
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
-      .then((user) => {
-        console.log(user)
-        alert('Login berhasil !')
+      .then(() => {
+        setIsLoginRequestLoading(false)
         history.push('/')
       })
       .catch((err) => {
@@ -64,9 +66,14 @@ export default function Login(): ReactElement {
           />
         </div>
         <div className={classes.buttonGroup}>
-          <Button variant="contained" color="primary" type="submit">
+          <ButtonForm
+            variant="contained"
+            color="primary"
+            type="submit"
+            isLoading={isLoginRequestLoading}
+          >
             Login
-          </Button>
+          </ButtonForm>
           <div className={classes.helperRedirect}>
             <Typography>Belum memiliki akun ?&nbsp;</Typography>
             <Typography>

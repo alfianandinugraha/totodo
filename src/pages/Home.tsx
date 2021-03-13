@@ -5,6 +5,7 @@ import {
   finishTodoRequest,
   updateTodoRequest,
 } from '@/api/TodosRequest'
+import ButtonForm from '@/components/ButtonForm'
 import HeaderDashboard from '@/components/HeaderDashboard'
 import TodoCard, { TodoButtonType } from '@/components/TodoCard'
 import useTitlePage from '@/hooks/useTitlePage'
@@ -216,15 +217,15 @@ export default function Home(): ReactElement {
                 />
               </div>
               <div>
-                <Button
+                <ButtonForm
                   variant="contained"
                   color="primary"
                   fullWidth
                   type="submit"
-                  disabled={isUserInfoLoading}
+                  isLoading={isUserInfoLoading}
                 >
                   Tambah Aktifitas
-                </Button>
+                </ButtonForm>
               </div>
             </form>
             <div className={classes.listTodoContainer}>
