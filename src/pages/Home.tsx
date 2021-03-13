@@ -212,6 +212,9 @@ export default function Home(): ReactElement {
               {isFetchTodoLoading && (
                 <CircularProgress style={{ margin: '0 auto' }} />
               )}
+              {todos.length === 0 && !isFetchTodoLoading && (
+                <Typography align="center">Tidak ada aktifitas</Typography>
+              )}
               {todos.length !== 0 &&
                 todos.map((todo) => (
                   <TodoCard
