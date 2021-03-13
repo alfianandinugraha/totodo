@@ -1,4 +1,4 @@
-import firebase from '@/utils/firebase'
+import firebase, { TODOS_COLLECTION } from '@/utils/firebase'
 import { Todo, TodoBody, User } from 'Types'
 
 const fetchTodosRequest = (
@@ -6,16 +6,16 @@ const fetchTodosRequest = (
 ): Promise<firebase.firestore.QuerySnapshot<firebase.firestore.DocumentData>> =>
   firebase
     .firestore()
-    .collection('todos')
+    .collection(TODOS_COLLECTION)
     .where('uid', '==', user.uid)
     .orderBy('todoId', 'desc')
     .get()
 
 const deleteTodoRequest = (todo: Todo): Promise<void> =>
-  firebase.firestore().collection('todos').doc(todo.docId).delete()
+  firebase.firestore().collection(TODOS_COLLECTION).doc(todo.docId).delete()
 
 const finishTodoRequest = (todo: Todo): Promise<void> =>
-  firebase.firestore().collection('todos').doc(todo.docId).update({
+  firebase.firestore().collection(TODOS_COLLECTION).doc(todo.docId).update({
     todoId: todo.docId,
     description: todo.description,
     uid: todo.uid,
@@ -23,7 +23,7 @@ const finishTodoRequest = (todo: Todo): Promise<void> =>
   })
 
 const updateTodoRequest = (todo: Todo): Promise<void> =>
-  firebase.firestore().collection('todos').doc(todo.docId).update({
+  firebase.firestore().collection(TODOS_COLLECTION).doc(todo.docId).update({
     todoId: todo.docId,
     description: todo.description,
     uid: todo.uid,
@@ -34,7 +34,7 @@ const addTodoRequest = (
   todo: TodoBody
 ): Promise<
   firebase.firestore.DocumentReference<firebase.firestore.DocumentData>
-> => firebase.firestore().collection('todos').add(todo)
+> => firebase.firestore().collection(TODOS_COLLECTION).add(todo)
 
 export {
   fetchTodosRequest,
