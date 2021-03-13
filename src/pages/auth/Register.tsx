@@ -1,6 +1,9 @@
-import firebase, { USERS_COLLECTION } from '@/utils/firebase'
+import firebase, {
+  checkMaxLengthUserFullname,
+  USERS_COLLECTION,
+} from '@/utils/firebase'
 import { Container, Typography, TextField, Button } from '@material-ui/core'
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useState } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import { FormLogin } from './Login'
 import useStyles from './useStyles'
@@ -13,6 +16,9 @@ interface FormRegister extends FormLogin {
 export default function Register(): ReactElement {
   const classes = useStyles()
   const history = useHistory()
+  const [errorInputFullname, setErrorInputFullname] = useState<
+    string | undefined
+  >()
 
   const submitRegisterHandler = async (
     e: React.FormEvent<HTMLFormElement> | undefined
@@ -37,6 +43,13 @@ export default function Register(): ReactElement {
       return
     }
 
+    const validateLengthFullname = checkMaxLengthUserFullname(fullname)
+
+    if (!validateLengthFullname.isValid) {
+      setErrorInputFullname(validateLengthFullname.message)
+      return
+    }
+
     console.log({ email, password, repassword, fullname })
 
     try {
@@ -55,6 +68,7 @@ export default function Register(): ReactElement {
             createdAt: firebase.firestore.Timestamp.fromDate(new Date()),
             updatedAt: firebase.firestore.Timestamp.fromDate(new Date()),
           })
+        setErrorInputFullname('')
       }
 
       console.log({ authResult })
@@ -73,7 +87,14 @@ export default function Register(): ReactElement {
       </Typography>
       <form onSubmit={submitRegisterHandler} className={classes.formRoot}>
         <div className={classes.input}>
-          <TextField label="Fullname" name="fullname" type="text" fullWidth />
+          <TextField
+            label="Fullname"
+            name="fullname"
+            type="text"
+            fullWidth
+            error={!!errorInputFullname}
+            helperText={errorInputFullname}
+          />
         </div>
         <div className={classes.input}>
           <TextField label="Email" name="email" type="email" fullWidth />

@@ -1,7 +1,10 @@
 import { updateUserRequest } from '@/api/UserRequest'
 import HeaderDashboard from '@/components/HeaderDashboard'
 import UserContext from '@/store/UserContext'
-import { getFirebaseTimestamp } from '@/utils/firebase'
+import {
+  checkMaxLengthUserFullname,
+  getFirebaseTimestamp,
+} from '@/utils/firebase'
 import {
   Container,
   TextField,
@@ -9,7 +12,7 @@ import {
   Button,
   makeStyles,
 } from '@material-ui/core'
-import React, { ReactElement, useContext } from 'react'
+import React, { ReactElement, useContext, useState } from 'react'
 import { User } from 'Types'
 
 interface FormUpdateProfile {
@@ -29,6 +32,9 @@ const useStyles = makeStyles(({ spacing }) => ({
 
 export default function ProfilePage(): ReactElement {
   const { userInfo, setUserInfo } = useContext(UserContext)
+  const [errorInputFullname, setErrorInputFullname] = useState<
+    string | undefined
+  >()
   const classes = useStyles()
 
   const submitFormHandler = (e: React.FormEvent<HTMLFormElement>) => {
@@ -44,6 +50,13 @@ export default function ProfilePage(): ReactElement {
       return
     }
 
+    const validateLengthFullname = checkMaxLengthUserFullname(fullname)
+
+    if (!validateLengthFullname.isValid) {
+      setErrorInputFullname(validateLengthFullname.message)
+      return
+    }
+
     const newUserInfo: User = {
       ...userInfo,
       fullname,
@@ -53,6 +66,7 @@ export default function ProfilePage(): ReactElement {
     updateUserRequest(newUserInfo)
       .then(() => {
         setUserInfo(newUserInfo)
+        setErrorInputFullname('')
         alert('Nama berhasil di perbaharui')
       })
       .catch(() => {
@@ -70,6 +84,8 @@ export default function ProfilePage(): ReactElement {
             label="Fullname"
             defaultValue={userInfo.fullname}
             name="fullname"
+            error={!!errorInputFullname}
+            helperText={errorInputFullname}
           />
           <Button variant="contained" color="primary" type="submit">
             Update
