@@ -1,4 +1,5 @@
 import { updateUserRequest } from '@/api/UserRequest'
+import ButtonForm from '@/components/ButtonForm'
 import HeaderDashboard from '@/components/HeaderDashboard'
 import useTitlePage from '@/hooks/useTitlePage'
 import UserContext from '@/store/UserContext'
@@ -6,13 +7,7 @@ import {
   checkMaxLengthUserFullname,
   getFirebaseTimestamp,
 } from '@/utils/firebase'
-import {
-  Container,
-  TextField,
-  Typography,
-  Button,
-  makeStyles,
-} from '@material-ui/core'
+import { Container, TextField, Typography, makeStyles } from '@material-ui/core'
 import React, { ReactElement, useContext, useState } from 'react'
 import { User } from 'Types'
 
@@ -34,6 +29,7 @@ const useStyles = makeStyles(({ spacing }) => ({
 export default function ProfilePage(): ReactElement {
   useTitlePage('Profile')
   const { userInfo, setUserInfo } = useContext(UserContext)
+  const [isRequestUpdateLoading, setIsRequestUpdateLoading] = useState(false)
   const [errorInputFullname, setErrorInputFullname] = useState<
     string | undefined
   >()
@@ -65,6 +61,7 @@ export default function ProfilePage(): ReactElement {
       updatedAt: getFirebaseTimestamp(),
     }
 
+    setIsRequestUpdateLoading(true)
     updateUserRequest(newUserInfo)
       .then(() => {
         setUserInfo(newUserInfo)
@@ -73,6 +70,9 @@ export default function ProfilePage(): ReactElement {
       })
       .catch(() => {
         alert('Update nama gagal')
+      })
+      .finally(() => {
+        setIsRequestUpdateLoading(false)
       })
   }
 
@@ -89,9 +89,14 @@ export default function ProfilePage(): ReactElement {
             error={!!errorInputFullname}
             helperText={errorInputFullname}
           />
-          <Button variant="contained" color="primary" type="submit">
+          <ButtonForm
+            variant="contained"
+            color="primary"
+            type="submit"
+            isLoading={isRequestUpdateLoading}
+          >
             Update
-          </Button>
+          </ButtonForm>
         </form>
       )}
     </Container>
