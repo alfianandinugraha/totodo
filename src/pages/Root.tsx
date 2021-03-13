@@ -1,6 +1,6 @@
 import React, { ReactElement, useContext, useEffect } from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
-import firebase from '@/utils/firebase'
+import firebase, { USERS_COLLECTION } from '@/utils/firebase'
 import AuthContext from '@/store/AuthContext'
 import UserContext from '@/store/UserContext'
 import { UserBody } from 'Types'
@@ -27,7 +27,7 @@ export default function Root(): ReactElement {
       if (user) {
         firebase
           .firestore()
-          .collection('users-v2')
+          .collection(USERS_COLLECTION)
           .doc(user.uid)
           .get()
           .then((val) => {

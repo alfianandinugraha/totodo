@@ -1,10 +1,10 @@
-import firebase from '@/utils/firebase'
+import firebase, { USERS_COLLECTION } from '@/utils/firebase'
 import { User } from 'Types'
 
 const updateUserRequest = (user: User): Promise<void> =>
   firebase
     .firestore()
-    .collection('users-v2')
+    .collection(USERS_COLLECTION)
     .doc(user.uid)
     .update({
       fullname: user.fullname,

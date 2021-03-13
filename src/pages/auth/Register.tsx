@@ -1,4 +1,4 @@
-import firebase from '@/utils/firebase'
+import firebase, { USERS_COLLECTION } from '@/utils/firebase'
 import { Container, Typography, TextField, Button } from '@material-ui/core'
 import React, { ReactElement } from 'react'
 import { Link, useHistory } from 'react-router-dom'
@@ -47,7 +47,7 @@ export default function Register(): ReactElement {
       if (authResult.user) {
         await firebase
           .firestore()
-          .collection('users-v2')
+          .collection(USERS_COLLECTION)
           .doc(authResult.user.uid)
           .set({
             fullname,
