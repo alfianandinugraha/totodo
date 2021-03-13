@@ -1,4 +1,7 @@
-import firebase, { TODOS_COLLECTION } from '@/utils/firebase'
+import firebase, {
+  getFirebaseTimestamp,
+  TODOS_COLLECTION,
+} from '@/utils/firebase'
 import { Todo, TodoBody, User } from 'Types'
 
 const fetchTodosRequest = (
@@ -20,6 +23,7 @@ const finishTodoRequest = (todo: Todo): Promise<void> =>
     description: todo.description,
     uid: todo.uid,
     isFinish: !todo.isFinish,
+    updatedAt: getFirebaseTimestamp(),
   })
 
 const updateTodoRequest = (todo: Todo): Promise<void> =>
@@ -28,6 +32,7 @@ const updateTodoRequest = (todo: Todo): Promise<void> =>
     description: todo.description,
     uid: todo.uid,
     isFinish: todo.isFinish,
+    updatedAt: getFirebaseTimestamp(),
   })
 
 const addTodoRequest = (

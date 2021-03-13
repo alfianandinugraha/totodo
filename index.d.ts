@@ -29,6 +29,8 @@ declare module 'Types' {
     description: string
     uid: string
     isFinish: boolean
+    createdAt: firebase.firestore.Timestamp
+    updatedAt: firebase.firestore.Timestamp
   }
 
   export interface Todo extends TodoBody {

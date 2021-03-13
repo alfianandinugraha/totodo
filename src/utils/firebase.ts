@@ -13,8 +13,12 @@ const firebaseConfig = {
 
 const USERS_COLLECTION = 'users'
 const TODOS_COLLECTION = 'todos'
+const getFirebaseTimestamp = (
+  PropsDate: Date = new Date()
+): firebase.firestore.Timestamp =>
+  firebase.firestore.Timestamp.fromDate(PropsDate)
 
 if (!firebase.apps.length) firebase.initializeApp(firebaseConfig)
 
-export { USERS_COLLECTION, TODOS_COLLECTION }
+export { USERS_COLLECTION, TODOS_COLLECTION, getFirebaseTimestamp }
 export default firebase

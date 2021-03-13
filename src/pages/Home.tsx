@@ -10,6 +10,7 @@ import TodoCard, { TodoButtonType } from '@/components/TodoCard'
 import { initialTodo } from '@/initial/Todos'
 import AuthContext from '@/store/AuthContext'
 import UserContext from '@/store/UserContext'
+import { getFirebaseTimestamp } from '@/utils/firebase'
 import {
   Container,
   makeStyles,
@@ -77,19 +78,19 @@ export default function Home(): ReactElement {
     }
 
     console.log({ description, todoId, uid })
+    const firebaseTimestamp = getFirebaseTimestamp()
     const todoBody: TodoBody = {
       description,
       todoId,
       uid,
       isFinish: false,
+      createdAt: firebaseTimestamp,
+      updatedAt: firebaseTimestamp,
     }
 
     addTodoRequest(todoBody)
       .then((res) => {
-        setTodos([
-          { description, todoId, uid, isFinish: false, docId: res.id },
-          ...todos,
-        ])
+        setTodos([{ ...todoBody, docId: res.id }, ...todos])
         alert('Todo berhasil ditambahan')
       })
       .catch(() => alert('Todo gagal ditambahkan'))
