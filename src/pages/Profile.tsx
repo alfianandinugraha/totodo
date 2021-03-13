@@ -1,5 +1,6 @@
 import { updateUserRequest } from '@/api/UserRequest'
 import HeaderDashboard from '@/components/HeaderDashboard'
+import useTitlePage from '@/hooks/useTitlePage'
 import UserContext from '@/store/UserContext'
 import {
   checkMaxLengthUserFullname,
@@ -31,6 +32,7 @@ const useStyles = makeStyles(({ spacing }) => ({
 }))
 
 export default function ProfilePage(): ReactElement {
+  useTitlePage('Profile')
   const { userInfo, setUserInfo } = useContext(UserContext)
   const [errorInputFullname, setErrorInputFullname] = useState<
     string | undefined

@@ -7,6 +7,7 @@ import {
 } from '@/api/TodosRequest'
 import HeaderDashboard from '@/components/HeaderDashboard'
 import TodoCard, { TodoButtonType } from '@/components/TodoCard'
+import useTitlePage from '@/hooks/useTitlePage'
 import { initialTodo } from '@/initial/Todos'
 import AuthContext from '@/store/AuthContext'
 import UserContext from '@/store/UserContext'
@@ -63,6 +64,7 @@ const useStyles = makeStyles(({ spacing }) => ({
 }))
 
 export default function Home(): ReactElement {
+  useTitlePage('Totodo - Catat aktifitas mu !')
   const { isLoggedIn, isAuthLoading } = useContext(AuthContext)
   const { userInfo, isUserInfoLoading } = useContext(UserContext)
   const [isFetchTodoLoading, setIsFetchTodoLoading] = useState(true)

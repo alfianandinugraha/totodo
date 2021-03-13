@@ -1,3 +1,4 @@
+import useTitlePage from '@/hooks/useTitlePage'
 import firebase, {
   checkMaxLengthUserFullname,
   USERS_COLLECTION,
@@ -14,6 +15,7 @@ interface FormRegister extends FormLogin {
 }
 
 export default function Register(): ReactElement {
+  useTitlePage('Register')
   const classes = useStyles()
   const history = useHistory()
   const [errorInputFullname, setErrorInputFullname] = useState<

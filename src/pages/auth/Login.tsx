@@ -1,3 +1,4 @@
+import useTitlePage from '@/hooks/useTitlePage'
 import firebase from '@/utils/firebase'
 import { Button, Container, TextField, Typography } from '@material-ui/core'
 import React, { ReactElement } from 'react'
@@ -10,6 +11,7 @@ export interface FormLogin {
 }
 
 export default function Login(): ReactElement {
+  useTitlePage('Login')
   const history = useHistory()
   const classes = useStyles()
 
