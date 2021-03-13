@@ -18,6 +18,7 @@ const getFirebaseTimestamp = (
 ): firebase.firestore.Timestamp =>
   firebase.firestore.Timestamp.fromDate(PropsDate)
 const MAX_LENGTH_TODO_DESCRIPTION = 50
+const MAX_LENGTH_USER_FULLNAME = 50
 
 const checkMaxLengthTodoDescrition = (
   description: string
@@ -32,6 +33,19 @@ const checkMaxLengthTodoDescrition = (
         message: '',
       }
 
+const checkMaxLengthUserFullname = (
+  fullname: string
+): { isValid: boolean; message: string } =>
+  fullname.length > MAX_LENGTH_USER_FULLNAME
+    ? {
+        isValid: false,
+        message: `Nama terlalu panjang, maksimal 50 karakter. Ukuran sekarang ${fullname.length} karakter`,
+      }
+    : {
+        isValid: true,
+        message: '',
+      }
+
 if (!firebase.apps.length) firebase.initializeApp(firebaseConfig)
 
 export {
@@ -40,5 +54,6 @@ export {
   getFirebaseTimestamp,
   MAX_LENGTH_TODO_DESCRIPTION,
   checkMaxLengthTodoDescrition,
+  checkMaxLengthUserFullname,
 }
 export default firebase
