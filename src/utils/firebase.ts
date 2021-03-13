@@ -17,8 +17,28 @@ const getFirebaseTimestamp = (
   PropsDate: Date = new Date()
 ): firebase.firestore.Timestamp =>
   firebase.firestore.Timestamp.fromDate(PropsDate)
+const MAX_LENGTH_TODO_DESCRIPTION = 50
+
+const checkMaxLengthTodoDescrition = (
+  description: string
+): { isValid: boolean; message: string } =>
+  description.length > MAX_LENGTH_TODO_DESCRIPTION
+    ? {
+        isValid: false,
+        message: `Maksimum adalah 50. ukurang sekarang ${description.length}`,
+      }
+    : {
+        isValid: true,
+        message: '',
+      }
 
 if (!firebase.apps.length) firebase.initializeApp(firebaseConfig)
 
-export { USERS_COLLECTION, TODOS_COLLECTION, getFirebaseTimestamp }
+export {
+  USERS_COLLECTION,
+  TODOS_COLLECTION,
+  getFirebaseTimestamp,
+  MAX_LENGTH_TODO_DESCRIPTION,
+  checkMaxLengthTodoDescrition,
+}
 export default firebase
