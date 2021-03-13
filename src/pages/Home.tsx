@@ -17,6 +17,7 @@ import {
   TextField,
   Typography,
   Button,
+  CircularProgress,
 } from '@material-ui/core'
 import React, { ReactElement, useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
@@ -53,12 +54,15 @@ const useStyles = makeStyles(({ spacing }) => ({
   },
   listTodoContainer: {
     marginTop: spacing(3),
+    display: 'flex',
+    flexDirection: 'column',
   },
 }))
 
 export default function Home(): ReactElement {
   const { isLoggedIn, isAuthLoading } = useContext(AuthContext)
   const { userInfo, isUserInfoLoading } = useContext(UserContext)
+  const [isFetchTodoLoading, setIsFetchTodoLoading] = useState(true)
   const [todos, setTodos] = useState<Todo[]>([])
   const classes = useStyles()
 
@@ -164,6 +168,7 @@ export default function Home(): ReactElement {
       })) as Todo[]
       console.log(todosData)
       setTodos(todosData)
+      setIsFetchTodoLoading(false)
     })
   }, [isUserInfoLoading])
 
@@ -204,6 +209,9 @@ export default function Home(): ReactElement {
               </div>
             </form>
             <div className={classes.listTodoContainer}>
+              {isFetchTodoLoading && (
+                <CircularProgress style={{ margin: '0 auto' }} />
+              )}
               {todos.length !== 0 &&
                 todos.map((todo) => (
                   <TodoCard
